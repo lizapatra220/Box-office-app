@@ -1,48 +1,82 @@
-import React ,{useState}from 'react'
-import MainPageLayout from "../Components/MainPageLayout"
-import {getApi} from "../misc/config";
+import React, { useState } from "react";
+import ActorCard from "../Components/actor/ActorCard";
+import MainPageLayout from "../Components/MainPageLayout";
+import ShowGrid from "../Components/show/ShowGrid";
+import { getApi } from "../misc/config";
 const Home = () => {
-    const [input, setinput] = useState('');
-    const [results, setresults] = useState(null);
-    const onSearchValue =()=>{
-        getApi(`/search/shows?q=${input}`)
-        .then(result=>{
-            setresults(result)
-        })
-    }
-   
-   const  onChangeValue =(ev)=>{
-        setinput(ev.target.value);
+  const [input, setinput] = useState("");
+  const [results, setresults] = useState(null);
+  const [onShowOption, setonShowOption] = useState("shows");
+  const searchedShow = onShowOption === "shows";
+  const onSearchValue = () => {
+    getApi(`/search/${onShowOption}?q=${input}`).then((result) => {
+      setresults(result);
+    });
+  };
 
+  const onChangeValue = (ev) => {
+    setinput(ev.target.value);
+  };
+  const onKeyDown = (ev) => {
+    if (ev.keyCode === 13) {
+      onSearchValue();
     }
-    const onKeyDown =(ev)=>{
-        if(ev.keyCode===13){
-            onSearchValue();
-        }
+  };
+  const onRadioOption = (ev) => {
+    setonShowOption(ev.target.value);
+  };
+  console.log(onShowOption);
+  const resultRender = () => {
+    if (results && results.length === 0) {
+      return <div>No results</div>;
     }
-   const resultRender =()=>{
-    if(results && results.length===0){
-        return <div>No results</div>
-
-    }
-    if(results && results.length>0){
-        return (
-            <div>
-                {
-                    results.map(item=>(<div key={item.show.id}>{item.show.name}</div>))
-                }
-            </div>
-        )
-
+    if (results && results.length > 0) {
+      return results[0].show ? (
+        <ShowGrid data={results} />
+      ) : (
+        <ActorCard data={results} />
+      );
     }
     return null;
-   }
-  return <MainPageLayout>
-    <input type="text" onChange={onChangeValue} value={input} onKeyDown ={onKeyDown}/>
-    <button type="text" onClick={onSearchValue}>Search</button>
-    {resultRender()};
-  </MainPageLayout>
-    
-}
+  };
 
-export default Home
+  return (
+    <MainPageLayout>
+      <input
+        type="text"
+        placeholder="search something"
+        onChange={onChangeValue}
+        value={input}
+        onKeyDown={onKeyDown}
+      />
+      <div>
+        <label htmlFor="shows-search">
+          Shows
+          <input
+            id="shows-search"
+            type="radio"
+            value="shows"
+            onChange={onRadioOption}
+            checked={searchedShow}
+          />
+        </label>
+        <label htmlFor="actor-search">
+          Actor
+          <input
+            id="actor-search"
+            type="radio"
+            value="people"
+            onChange={onRadioOption}
+            checked={!searchedShow}
+          />
+        </label>
+      </div>
+      <button type="text" onClick={onSearchValue}>
+        Search
+      </button>
+      {resultRender()}
+    </MainPageLayout>
+  );
+};
+
+export default Home;
