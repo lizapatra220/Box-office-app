@@ -1,12 +1,13 @@
 import React ,{useState}from 'react'
 import MainPageLayout from "../Components/MainPageLayout"
+import {getApi} from "../misc/config";
 const Home = () => {
     const [input, setinput] = useState('');
+    const [results, setresults] = useState(null);
     const onSearchValue =()=>{
-        fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
-        .then(r=>r.json())
+        getApi(`/search/shows?q=${input}`)
         .then(result=>{
-            console.log(result);
+            setresults(result)
         })
     }
    
@@ -19,10 +20,27 @@ const Home = () => {
             onSearchValue();
         }
     }
-   
+   const resultRender =()=>{
+    if(results && results.length===0){
+        return <div>No results</div>
+
+    }
+    if(results && results.length>0){
+        return (
+            <div>
+                {
+                    results.map(item=>(<div key={item.show.id}>{item.show.name}</div>))
+                }
+            </div>
+        )
+
+    }
+    return null;
+   }
   return <MainPageLayout>
     <input type="text" onChange={onChangeValue} value={input} onKeyDown ={onKeyDown}/>
     <button type="text" onClick={onSearchValue}>Search</button>
+    {resultRender()};
   </MainPageLayout>
     
 }
