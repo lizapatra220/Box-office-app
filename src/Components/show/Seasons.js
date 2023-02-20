@@ -4,12 +4,11 @@ import {SeasonsWrapper,SeasonList}from "./Seasons.styled"
 const Seasons = ({seasons}) => {
   return (
     <SeasonsWrapper>
-
         <p>
             Seasons in total:<span>{seasons.length}</span>
         </p>
         <p>
-            Episodes in total:{' '}
+            Episodes in total:
             <span>
                 {
                     seasons.reduce((acc,season)=>acc+season.episodeOrder,0)

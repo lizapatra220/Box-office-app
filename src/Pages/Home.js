@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ActorCard from "../Components/actor/ActorCard";
 import MainPageLayout from "../Components/MainPageLayout";
 import ShowGrid from "../Components/show/ShowGrid";
+import ActorGrid from '../Components/actor/ActorGrid'
 import { getApi } from "../misc/config";
 const Home = () => {
   const [input, setinput] = useState("");
@@ -25,8 +26,9 @@ const Home = () => {
   const onRadioOption = (ev) => {
     setonShowOption(ev.target.value);
   };
-  console.log(onShowOption);
+  // console.log(onShowOption);
   const resultRender = () => {
+    console.log('result', results)
     if (results && results.length === 0) {
       return <div>No results</div>;
     }
@@ -34,7 +36,7 @@ const Home = () => {
       return results[0].show ? (
         <ShowGrid data={results} />
       ) : (
-        <ActorCard data={results} />
+        <ActorGrid data={results} />
       );
     }
     return null;

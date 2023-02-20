@@ -1,10 +1,9 @@
 import React from "react";
 import ActorCard from "./ActorCard";
-import IMAGE_NOT_FOUND from "../../Images/images.png"
-import {FlexGrid} from "../styled"
+import IMAGE_NOT_FOUND from "../../Images/images.png";
+import { FlexGrid } from "../styled";
 
 const ActorGrid = ({ data }) => {
-  
   return (
     <FlexGrid>
       {data.map(({ person }) => (
