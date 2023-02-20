@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import ActorCard from "../Components/actor/ActorCard";
+// import ActorCard from "../Components/actor/ActorCard";
 import MainPageLayout from "../Components/MainPageLayout";
 import ShowGrid from "../Components/show/ShowGrid";
 import ActorGrid from "../Components/actor/ActorGrid";
 import { getApi } from "../misc/config";
 import { useLastQuery } from "../misc/custom-hooks";
+import {
+  RadioInputsWrapper,
+  SearchButtonWrapper,
+  SearchInput,
+} from "./Home.styled";
+import CustomRadio from "../Components/CustomRadio";
 const Home = () => {
   const [input, setinput] = useLastQuery();
   const [results, setresults] = useState(null);
@@ -45,38 +51,39 @@ const Home = () => {
 
   return (
     <MainPageLayout>
-      <input
+      <SearchInput
         type="text"
         placeholder="search something"
         onChange={onChangeValue}
         value={input}
         onKeyDown={onKeyDown}
       />
-      <div>
-        <label htmlFor="shows-search">
-          Shows
-          <input
+      <RadioInputsWrapper>
+        <div>
+          <CustomRadio
+            label="Shows"
             id="shows-search"
-            type="radio"
             value="shows"
             onChange={onRadioOption}
             checked={searchedShow}
           />
-        </label>
-        <label htmlFor="actor-search">
-          Actor
-          <input
+        </div>
+        <div>
+          <CustomRadio
+            label="Actors"
             id="actor-search"
-            type="radio"
             value="people"
             onChange={onRadioOption}
             checked={!searchedShow}
           />
-        </label>
-      </div>
-      <button type="text" onClick={onSearchValue}>
-        Search
-      </button>
+        </div>
+      </RadioInputsWrapper>
+      <SearchButtonWrapper>
+        <button type="text" onClick={onSearchValue}>
+          Search
+        </button>
+      </SearchButtonWrapper>
+
       {resultRender()}
     </MainPageLayout>
   );
