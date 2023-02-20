@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import ActorCard from "../Components/actor/ActorCard";
 import MainPageLayout from "../Components/MainPageLayout";
 import ShowGrid from "../Components/show/ShowGrid";
-import ActorGrid from '../Components/actor/ActorGrid'
+import ActorGrid from "../Components/actor/ActorGrid";
 import { getApi } from "../misc/config";
+import { useLastQuery } from "../misc/custom-hooks";
 const Home = () => {
-  const [input, setinput] = useState("");
+  const [input, setinput] = useLastQuery();
   const [results, setresults] = useState(null);
   const [onShowOption, setonShowOption] = useState("shows");
   const searchedShow = onShowOption === "shows";
@@ -28,7 +29,7 @@ const Home = () => {
   };
   // console.log(onShowOption);
   const resultRender = () => {
-    console.log('result', results)
+    console.log("result", results);
     if (results && results.length === 0) {
       return <div>No results</div>;
     }
